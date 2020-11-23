@@ -31,10 +31,10 @@ define( 'WP_DEBUG', true );
 // These tests will DROP ALL TABLES in the database with the prefix named below.
 // DO NOT use a production database or one that is shared with something else.
 
-define( 'DB_NAME'       , getenv( 'WP_DB_NAME' ) ?: 'wp_phpunit_tests' );
-define( 'DB_USER'       , getenv( 'WP_DB_USER' ) ?: 'root' );
-define( 'DB_PASSWORD'   , getenv( 'WP_DB_PASS' ) ?: '' );
-define( 'DB_HOST'       , getenv( 'WP_DB_HOST' ) ?: 'localhost' );
+define( 'DB_NAME'       , getenv( 'WP_DB_NAME' ) ?: 'wordpress_develop' );
+define( 'DB_USER', 'root' );
+define( 'DB_PASSWORD', '' );
+define( 'DB_HOST'       , '127.0.0.1' );
 define( 'DB_CHARSET'    , 'utf8' );
 define( 'DB_COLLATE'    , '' );
 
@@ -44,14 +44,15 @@ define( 'DB_COLLATE'    , '' );
  * Change these to different unique phrases!
  * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
  */
-define( 'AUTH_KEY',         'put your unique phrase here' );
-define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
-define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
-define( 'NONCE_KEY',        'put your unique phrase here' );
-define( 'AUTH_SALT',        'put your unique phrase here' );
-define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
-define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
-define( 'NONCE_SALT',       'put your unique phrase here' );
+define( 'AUTH_KEY', '>xw<_ T#~]l2b5XP0=J+mwqV(:b12O8)U-^I]h=U1t1g,;@ZwFZEi}If w4-]1U6' );
+define( 'SECURE_AUTH_KEY', 'MR/<J[=Jml<}c*;t0w8&8TsdwvQQzi1?kk{LYgfhI5O^J<yR./hAtws@{B,-z]{B' );
+define( 'LOGGED_IN_KEY', '{B`(Ruj?F+Whd_-IdkS4aPhWW605~*?y;Pn1J((OC<y;>zM_8#7@L#rNl:K2HCNb' );
+define( 'NONCE_KEY', 'I-&5jynYY%|A*uExt/2z)Sl}1SC6U|B>Ke?%Abd60[ii:GYMc3J;G6/~!$3RkC[W' );
+define( 'AUTH_SALT', '0`!;X]-~1XP0]U}+sDOo6n6;oyo5tREG:9;`Ztxpa>< JpC^83=eAezCXp=SF`^x' );
+define( 'SECURE_AUTH_SALT', 'AJ@A>[PAdh:DK%)KO*MX5pGr3~AAg5w6Q6mig_>tpGry`=+&gJ|nj}#TdK+@ H#(' );
+define( 'LOGGED_IN_SALT', 'Hu[q-P?(mE/Xd6N|WODDciZ3y%1!x]Tu?GGYX|1dz St_*ousn3Hp!sStuSdM`j6' );
+define( 'NONCE_SALT', 'C.Itr%;9R2d.JDkr[MJ(Qk!lX*=MRs?.FZ_dI:,9>pkk%4mtbWdcYWAG9[5MXFm<' );
+define( 'WP_CACHE_KEY_SALT', '=>I?<qfV@v{y[v1)SUU_lOV35dQUUH5YJv(^$FFOcz(DQQTJkChRf?OUrd(WC_f>' );
 
 $table_prefix = 'tests_';   // Only numbers, letters, and underscores please!
 
