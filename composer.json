@@ -21,5 +21,7 @@
             "pc_vendor/GuzzleHttp/Promise/functions.php"
         ]
     },
-    "require": {}
+    "require-dev": {
+        "symfony/var-dumper": "^5.0"
+    }
 }

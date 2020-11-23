@@ -152,4 +152,17 @@ final class App {
 			self::$instance->get( 'di' )->create( $class, $args ) :
 			null;
 	}
+
+	/**
+	 * Creates an instance using Dice.
+	 *
+	 * @param string $class
+	 * @param array $args
+	 * @return object|null
+	 */
+	public static function config() {
+		return self::$instance->serviceContainer->has( 'config' ) ?
+			self::$instance->get( 'config' ):
+			null;
+	}
 }
