@@ -1,0 +1,25 @@
+{
+    "name": "pinkcrab/inventory-managment",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-only",
+    "description": "PinkCrab Inventory Managment. Makes stock checks, order picking and goods in a more enjoyable experience.",
+    "authors": [{
+        "name": "Glynn Queclh",
+        "email": "glynn.quelch@gmail.com"
+    }],
+    "autoload": {
+        "psr-4": {
+            "PinkCrab\\Core\\": "core/",
+            "PinkCrab\\InventoryManagment\\": "src/",
+            "PC_Vendor\\": "pc_vendor/"
+        },
+        "files": [
+            "/pc_vendor/GuzzleHttp/Guzzle/functions.php",
+            "/pc_vendor/GuzzleHttp/Psr7/functions.php",
+            "/pc_vendor/GuzzleHttp/Promise/functions.php"
+        ]
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.0"
+    }
+}
