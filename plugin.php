@@ -1,7 +1,4 @@
 <?php
-
-use PinkCrab\Core\App;
-
 /**
  * @wordpress-plugin
  * Plugin Name:     PinkCrab Inventory Managment
@@ -15,57 +12,33 @@ use PinkCrab\Core\App;
  * Text Domain:     pc_invman
  */
 
-# if this file is called directly, abort
-if (!defined('WPINC')) {
+use PinkCrab\Core\App;
+use PinkCrab\InventoryManagment\WP\Activation;
+
+if ( ! defined( 'WPINC' ) ) {
 	die;
-}
-
-
-
-/**
- * Absolute path for plugin.
- */
-define('PC_POS_PLUGIN_DIR', untrailingslashit(dirname(__FILE__)));
-
-/**
- * Sets the key used for the transient cache.
- */
-if (!defined('PC_TRANSIENT_CACHE_KEY')) {
-	define('PC_TRANSIENT_CACHE_KEY', 'FgPosSync');
-}
-
-/**
- * Set the base uploads dir as a constant.
- */
-if (!defined('PC_UPLOAD_BASE_PATH')) {
-	$upload = wp_upload_dir();
-	define('PC_UPLOAD_BASE_PATH', $upload['basedir']);
-}
-
-/**
- * Defines the base rest namespace.
- */
-if (!defined('FgPosSync_REST_NAMESPACE')) {
-	define('FgPosSync_REST_NAMESPACE', 'FgPosSync/v1');
-}
-
-/**
- * Defines the base rest namespace.
- */
-if (!defined('FgPosSync_REST_KEY')) {
-	define('FgPosSync_REST_KEY', 'Cg67SdY$h$0Ke8P%!0KMbfMDZb$3*Rna*KXqA7$loc13f3ystrhLSLd$#E^B&e$L');
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/bootstrap.php';
 
-add_action('init', function () {
-	
-	add_filter('jhjkhkj', function ($e) {
-		dump($e);
-	});
-	
-	dump(App::config()->path('assets_url'));
-});
+register_activation_hook( __FILE__, array( App::make( Activation::class ), 'activate' ) );
+register_deactivation_hook( __FILE__, array( App::make( Deactivation::class ), 'deactivate' ) );
+
+add_action(
+	'init',
+	function () {
+
+		// add_filter(
+		// 	'PC_InvMan\\config_paths',
+		// 	function ( $e ) {
+		// 		return $e;
+		// 	}
+		// );
+
+		// dump( App::config() );
+		// dump( App::make( Config::class )->path( 'assets_url' ) );
+	}
+);
 
 
