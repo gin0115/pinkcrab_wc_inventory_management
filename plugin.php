@@ -14,6 +14,7 @@
 
 use PinkCrab\Core\App;
 use PinkCrab\InventoryManagment\WP\Activation;
+use PinkCrab\InventoryManagment\WP\Deactivation;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;

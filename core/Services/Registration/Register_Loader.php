@@ -24,12 +24,12 @@ declare(strict_types=1);
 
 namespace PinkCrab\Core\Services\Registration;
 
-use PinkCrab\Core\Services\Registration\Loader;
 use PinkCrab\Core\App;
 use PinkCrab\Core\Interfaces\Registerable;
+use PinkCrab\Core\Services\Registration\Loader;
 
-class Register_Loader
-{
+class Register_Loader {
+
 
 	/**
 	 * Loops through all classes for regisration and regiter
@@ -40,11 +40,10 @@ class Register_Loader
 	 * @param PinkCrab\Core\Services\Registration\Loader $loader
 	 * @return void
 	 */
-	public static function initalise(App $app, array $registerable_classes, Loader $loader): void
-	{
-		foreach ($registerable_classes as $class) {
-			if (in_array(Registerable::class, class_implements($class))) {
-				$app::make($class)->register($loader);
+	public static function initalise( App $app, array $registerable_classes, Loader $loader ): void {
+		foreach ( $registerable_classes as $class ) {
+			if ( in_array( Registerable::class, class_implements( $class ) ) ) {
+				$app::make( $class )->register( $loader );
 			}
 		}
 	}
