@@ -16,6 +16,7 @@ use PinkCrab\Core\Interfaces\Registerable;
 use PC_Vendor\GuzzleHttp\Psr7\ServerRequest;
 use PinkCrab\Core\Services\Registration\Loader;
 use PC_Vendor\Psr\Http\Message\ServerRequestInterface;
+use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Helper_Trait;
 
 class Multipack_Edit_Controller implements Registerable {
@@ -52,15 +53,16 @@ class Multipack_Edit_Controller implements Registerable {
 	 * @return void
 	 */
 	public function register( Loader $loader ): void {
+		// If we are using the multipack modifier.
+		if ( WooCommece_Settings::allow_multipack() ) {
+			// Simple Products
+			$loader->admin_action( 'woocommerce_product_options_stock_fields', array( $this, 'render_simple_pack_size_input' ) );
+			$loader->admin_action( 'woocommerce_process_product_meta', array( $this, 'save_pack_size' ) );
 
-		// Simple Products
-		$loader->action( 'woocommerce_product_options_stock_fields', array( $this, 'render_simple_pack_size_input' ) );
-		$loader->action( 'woocommerce_process_product_meta', array( $this, 'save_pack_size' ) );
-
-		// Variable Products
-		$loader->action( 'woocommerce_variation_options_pricing', array( $this, 'render_variation_pack_size_input' ), 10, 3 );
-		$loader->action( 'woocommerce_save_product_variation', array( $this, 'save_pack_size' ), 10, 2 );
-
+			// Variable Products
+			$loader->admin_action( 'woocommerce_variation_options_pricing', array( $this, 'render_variation_pack_size_input' ), 10, 3 );
+			$loader->admin_action( 'woocommerce_save_product_variation', array( $this, 'save_pack_size' ), 10, 2 );
+		}
 	}
 
 	/**

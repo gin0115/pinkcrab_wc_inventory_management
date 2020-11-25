@@ -14,8 +14,8 @@ use PinkCrab\InventoryManagment\MultiPack\Multipack_Edit_Controller;
 use PinkCrab\InventoryManagment\MultiPack\Multipack_Product_Controller;
 use PinkCrab\InventoryManagment\Settings\WooCommerce_Settings_Controller;
 
-
 return array(
+
 	// General.
 	WooCommerce_Settings_Controller::class,
 
