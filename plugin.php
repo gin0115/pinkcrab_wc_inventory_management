@@ -28,7 +28,7 @@ register_deactivation_hook( __FILE__, array( App::make( Deactivation::class ), '
 
 add_action(
 	'init',
-	function () {
+	function () {;
 
 		// add_filter(
 		// 	'PC_InvMan\\config_paths',
@@ -39,6 +39,8 @@ add_action(
 
 		// dump( App::config() );
 		// dump( App::make( Config::class )->path( 'assets_url' ) );
+
+		// add the action
 	}
 );
 
