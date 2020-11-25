@@ -13,6 +13,7 @@ namespace PinkCrab\InventoryManagment\MultiPack;
 
 class MultiPack_Config {
 
+	public const WC_SETTINGS_VARIABLE_TOTAL_STOCK     = 'pc_invman_variable_stock_level';
 	public const WC_SETTINGS_DEFAULT_MULTIPLIER_KEY   = 'pc_invman_multipack_default_multiplier';
 	public const WC_SETTINGS_DEFAULT_MULTIPLIER_VALUE = 1;
 

@@ -15,6 +15,7 @@ use WC_Admin_Settings;
 use PinkCrab\Core\Interfaces\Registerable;
 use PinkCrab\Core\Services\Registration\Loader;
 use PinkCrab\InventoryManagment\Application\Config;
+use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 
 class WooCommerce_Settings_Controller implements Registerable {
 
@@ -59,38 +60,34 @@ class WooCommerce_Settings_Controller implements Registerable {
 	 * @return array Array of settings
 	 */
 	public function get_settings( $current_section = '' ) {
-
 		$settings = apply_filters(
 			'myplugin_section1_settings',
 			array(
 
 				array(
-					'name' => __( 'Important Stuff', 'my-textdomain' ),
+					'name' => __( 'Multipack Controls', 'pc-invman' ),
 					'type' => 'title',
 					'desc' => '',
-					'id'   => 'myplugin_important_options',
+					'id'   => 'pc-invman_wc_settings_mp_header',
 				),
 
 				array(
-					'type'     => 'select',
-					'id'       => 'myplugin_select_1',
-					'name'     => __( 'Choose your favorite', 'my-textdomain' ),
-					'options'  => array(
-						'vanilla'    => __( 'Vanilla', 'my-textdomain' ),
-						'chocolate'  => __( 'Chocolate', 'my-textdomain' ),
-						'strawberry' => __( 'Strawberry', 'my-textdomain' ),
-					),
-					'class'    => 'wc-enhanced-select',
-					'desc_tip' => __( 'Be honest!', 'my-textdomain' ),
-					'default'  => 'vanilla',
+					'type'    => 'checkbox',
+					'id'      => WooCommece_Settings::ALLOW_MULTIPACK_MODIFIER,
+					'name'    => __( 'Use multipack modifiers?', 'pc-invman' ),
+					'desc'    => __( 'If enabled all products and variations can make use of the packsize modifiers.', 'pc-invman' ),
+					'default' => 'no',
 				),
 
 				array(
 					'type' => 'sectionend',
-					'id'   => 'myplugin_important_options',
+					'id'   => 'pc-invman_wc_settings_mp_header',
 				),
+
+				/** ---------------------------------------------------- */
+// PLACEHOLDERS BELOW!!!!
 				array(
-					'name' => __( 'Group 1', 'my-textdomain' ),
+					'name' => __( 'Group 1', 'pc-invman' ),
 					'type' => 'title',
 					'desc' => '',
 					'id'   => 'myplugin_group1_options',
@@ -99,8 +96,8 @@ class WooCommerce_Settings_Controller implements Registerable {
 				array(
 					'type'    => 'checkbox',
 					'id'      => 'myplugin_checkbox_1',
-					'name'    => __( 'Do a thing?', 'my-textdomain' ),
-					'desc'    => __( 'Enable to do something', 'my-textdomain' ),
+					'name'    => __( 'Do a thing?', 'pc-invman' ),
+					'desc'    => __( 'Enable to do something', 'pc-invman' ),
 					'default' => 'no',
 				),
 
@@ -110,7 +107,7 @@ class WooCommerce_Settings_Controller implements Registerable {
 				),
 
 				array(
-					'name' => __( 'Group 2', 'my-textdomain' ),
+					'name' => __( 'Group 2', 'pc-invman' ),
 					'type' => 'title',
 					'desc' => '',
 					'id'   => 'myplugin_group2_options',
@@ -119,14 +116,14 @@ class WooCommerce_Settings_Controller implements Registerable {
 				array(
 					'type'     => 'select',
 					'id'       => 'myplugin_select_1',
-					'name'     => __( 'What should happen?', 'my-textdomain' ),
+					'name'     => __( 'What should happen?', 'pc-invman' ),
 					'options'  => array(
-						'something' => __( 'Something', 'my-textdomain' ),
-						'nothing'   => __( 'Nothing', 'my-textdomain' ),
-						'idk'       => __( 'IDK', 'my-textdomain' ),
+						'something' => __( 'Something', 'pc-invman' ),
+						'nothing'   => __( 'Nothing', 'pc-invman' ),
+						'idk'       => __( 'IDK', 'pc-invman' ),
 					),
 					'class'    => 'wc-enhanced-select',
-					'desc_tip' => __( 'Don\'t ask me!', 'my-textdomain' ),
+					'desc_tip' => __( 'Don\'t ask me!', 'pc-invman' ),
 					'default'  => 'idk',
 				),
 
