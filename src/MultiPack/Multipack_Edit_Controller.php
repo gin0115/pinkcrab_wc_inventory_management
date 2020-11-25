@@ -16,8 +16,11 @@ use PinkCrab\Core\Interfaces\Registerable;
 use PC_Vendor\GuzzleHttp\Psr7\ServerRequest;
 use PinkCrab\Core\Services\Registration\Loader;
 use PC_Vendor\Psr\Http\Message\ServerRequestInterface;
+use PinkCrab\InventoryManagment\MultiPack\MultiPack_Helper_Trait;
 
 class Multipack_Edit_Controller implements Registerable {
+
+	use MultiPack_Helper_Trait;
 
 	/**
 	 * Packsize Metakey
@@ -55,7 +58,7 @@ class Multipack_Edit_Controller implements Registerable {
 		$loader->action( 'woocommerce_process_product_meta', array( $this, 'save_pack_size' ) );
 
 		// Variable Products
-		$loader->action( 'woocommerce_variation_options_inventory', array( $this, 'render_variation_pack_size_input' ), 10, 3 );
+		$loader->action( 'woocommerce_variation_options_pricing', array( $this, 'render_variation_pack_size_input' ), 10, 3 );
 		$loader->action( 'woocommerce_save_product_variation', array( $this, 'save_pack_size' ), 10, 2 );
 
 	}
@@ -73,11 +76,10 @@ class Multipack_Edit_Controller implements Registerable {
 			return;
 		}
 
-		$initial = $product_object->get_meta( $this->pack_size_key );
 		woocommerce_wp_text_input(
 			array(
 				'id'                => $this->pack_size_key,
-				'value'             => ! empty( $initial ) ? $initial : 1,
+				'value'             => $this->product_packsize_modifer( $product_object ),
 				'placeholder'       => 'Packsize (Defualts to 1)',
 				'label'             => __( 'Packsize', 'woocommerce' ),
 				'desc_tip'          => true,
@@ -100,12 +102,11 @@ class Multipack_Edit_Controller implements Registerable {
 	 */
 	public function render_variation_pack_size_input( int $loop, array $variation_data, WP_Post $variation ): void {
 
-		$initial = get_post_meta( $variation->ID, $this->pack_size_key, true );
 		woocommerce_wp_text_input(
 			array(
 				'id'                => $this->pack_size_key . $loop,
 				'name'              => $this->pack_size_key . "[{$loop}]",
-				'value'             => ! empty( $initial ) ? $initial : 1,
+				'value'             => $this->packsize_modifier_from_id( (int) $variation->ID ),
 				'label'             => __( 'Packsize', 'woocommerce' ),
 				'desc_tip'          => true,
 				'description'       => __( 'When this item is purchased what is packsize value used per item.', 'woocommerce' ),
