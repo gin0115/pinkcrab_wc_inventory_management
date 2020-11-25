@@ -38,7 +38,6 @@ add_action(
 		$app->get( 'di' )->addRules(
 			apply_filters( 'PinkCrab\\di_rules', require( 'config/dependencies.php' ) )
 		);
-
 		// Initalise all registerable classes.
 		Register_Loader::initalise(
 			$app,
@@ -49,5 +48,5 @@ add_action(
 		// Register Loader hooks.
 		$loader->register_hooks();
 	},
-	-1
+	1
 );

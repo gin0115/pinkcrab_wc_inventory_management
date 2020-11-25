@@ -14,6 +14,7 @@
 
 use PinkCrab\Core\App;
 use PinkCrab\InventoryManagment\WP\Activation;
+use PinkCrab\InventoryManagment\WP\Deactivation;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -24,21 +25,3 @@ require_once __DIR__ . '/bootstrap.php';
 
 register_activation_hook( __FILE__, array( App::make( Activation::class ), 'activate' ) );
 register_deactivation_hook( __FILE__, array( App::make( Deactivation::class ), 'deactivate' ) );
-
-add_action(
-	'init',
-	function () {
-
-		// add_filter(
-		// 	'PC_InvMan\\config_paths',
-		// 	function ( $e ) {
-		// 		return $e;
-		// 	}
-		// );
-
-		// dump( App::config() );
-		// dump( App::make( Config::class )->path( 'assets_url' ) );
-	}
-);
-
-
