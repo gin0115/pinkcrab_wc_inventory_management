@@ -80,6 +80,16 @@ trait MultiPack_Helper_Trait {
 	}
 
 	/**
+	 * Gets the modified stock level for a product.
+	 *
+	 * @param \WC_Product $product
+	 * @return int
+	 */
+	protected function get_modified_stock_level( WC_Product $product ): int {
+		return (int) floor( $product->get_total_stock() / $this->product_packsize_modifer( $product ) );
+	}
+
+	/**
 	 * Returns the max qty for a product, based on its modifier.
 	 * Uses the highest variation stock level for variable (as per WC)
 	 *
@@ -88,7 +98,7 @@ trait MultiPack_Helper_Trait {
 	 */
 	protected function get_max_qty_for_product( WC_Product $product ): int {
 
-		// If backorderable return -1 (no limit) and let WC handle.
+		// If backorderable return -1 (no limit) and let W`C handle.
 		if ( $product->backorders_allowed() ) {
 			return -1;
 		}
@@ -99,14 +109,14 @@ trait MultiPack_Helper_Trait {
 				array_map(
 					function( array $e ): int {
 						$variation = wc_get_product( $e['variation_id'] );
-						return (int) floor( $variation->get_total_stock() / $this->product_packsize_modifer( $variation ) );
+						return $this->get_modified_stock_level( $variation );
 					},
 					$product->get_available_variations()
 				)
 			);
 		} else {
 			// If not a variable, just return the modified value.
-			return (int) floor( $product->get_total_stock() / $this->product_packsize_modifer( $product ) );
+			return $this->get_modified_stock_level( $product );
 		}
 	}
 

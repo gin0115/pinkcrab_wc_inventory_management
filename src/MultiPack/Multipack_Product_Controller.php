@@ -23,6 +23,7 @@ class Multipack_Product_Controller implements Registerable {
 	 * @method int product_packsize_modifer()
 	 * @method int get_max_qty_for_product()
 	 * @method string managed_stock_product()
+     * @method int  get_modified_stock_level()
 	 */
 	use MultiPack_Helper_Trait;
 
@@ -67,7 +68,7 @@ class Multipack_Product_Controller implements Registerable {
 
 		$availability     = $product->get_availability();
 		$product_modifier = $this->product_packsize_modifer( $product );
-		$modified_stocks  = (int) floor( $product->get_total_stock() / $product_modifier );
+		$modified_stocks  = $this->get_modified_stock_level( $product );
 
 		// If out of stock and its backorderable but also out of stock.
 		if ( $availability['class'] === 'out-of-stock'
