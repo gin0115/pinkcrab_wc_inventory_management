@@ -11,10 +11,9 @@ declare(strict_types=1);
 
 namespace PinkCrab\InventoryManagment\MultiPack;
 
-use WP_Post, WC_Product;
+use WC_Product;
 use PinkCrab\Core\Interfaces\Registerable;
 use PinkCrab\Core\Services\Registration\Loader;
-use PinkCrab\InventoryManagment\MultiPack\MultiPack_Config;
 use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Helper_Trait;
 
