@@ -103,8 +103,7 @@ class Multipack_Product_Controller implements Registerable {
 	 * @return string
 	 */
 	public function set_max_input_value( string $value, WC_Product $product ):string {
-		$new_value = $this->get_max_qty_for_product( $product );
-		return (string) $new_value;
+		return (string) $this->get_max_qty_for_product( $product );
 	}
 
 	/**
