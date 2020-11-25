@@ -48,5 +48,5 @@ add_action(
 		// Register Loader hooks.
 		$loader->register_hooks();
 	},
-	-1
+	1
 );

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PinkCrab\InventoryManagment\Settings;
 
+use WC_Admin_Settings;
 use PinkCrab\Core\Interfaces\Registerable;
 use PinkCrab\Core\Services\Registration\Loader;
 use PinkCrab\InventoryManagment\Application\Config;
@@ -141,26 +142,26 @@ class WooCommerce_Settings_Controller implements Registerable {
 	}
 
 
-		/**
-		 * Output the settings
-		 *
-		 * @since 1.0
-		 */
+	/**
+	 * Output the settings
+	 *
+	 * @since 1.0
+	 */
 	public function output() {
 
 		global $current_section;
-		\WC_Admin_Settings::output_fields( $this->get_settings( $current_section ) );
+		WC_Admin_Settings::output_fields( $this->get_settings( $current_section ) );
 	}
 
 
-		/**
-		 * Save settings
-		 *
-		 * @since 1.0
-		 */
+	/**
+	 * Save settings
+	 *
+	 * @since 1.0
+	 */
 	public function save() {
 
 		global $current_section;
-		\WC_Admin_Settings::save_fields( $this->get_settings( $current_section ) );
+		WC_Admin_Settings::save_fields( $this->get_settings( $current_section ) );
 	}
 }

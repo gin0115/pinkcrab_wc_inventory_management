@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace PinkCrab\InventoryManagment\MultiPack;
 
-use WC_Product_Variable;
+use WP_Post, WC_Product_Variable;
 use PinkCrab\Core\Interfaces\Registerable;
 use PC_Vendor\GuzzleHttp\Psr7\ServerRequest;
 use PinkCrab\Core\Services\Registration\Loader;
@@ -93,12 +93,13 @@ class Multipack_Edit_Controller implements Registerable {
 	/**
 	 * Renders the packsize input for variable producuts.
 	 *
-	 * @param [type] $loop
-	 * @param [type] $variation_data
-	 * @param [type] $variation
+	 * @param int $loop
+	 * @param array $variation_data
+	 * @param WP_Post $variation
 	 * @return void
 	 */
-	public function render_variation_pack_size_input( $loop, $variation_data, $variation ) {
+	public function render_variation_pack_size_input( int $loop, array $variation_data, WP_Post $variation ): void {
+
 		$initial = get_post_meta( $variation->ID, $this->pack_size_key, true );
 		woocommerce_wp_text_input(
 			array(
@@ -143,7 +144,6 @@ class Multipack_Edit_Controller implements Registerable {
 					break;
 
 				default:
-					# code...
 					break;
 			}
 		}
