@@ -13,7 +13,6 @@ echo "* Please enter your DBPassword                                          *"
 read -p "* > "   DBPassword
 echo "* Please enter your DBHost                                              *"
 read -p "* > "   DBHost
-echo $DBHost
 
 
 echo "*************************************************************************"
@@ -28,7 +27,7 @@ echo "*                                                                       *"
 
 git clone https://github.com/woocommerce/woocommerce.git woo
 echo "*                                                                       *"
-echo "* Removing GIT from repo (avoids submodules)...                         *"
+echo "* Removing GIT from WC Test Repo...                                     *"
 
 
 
