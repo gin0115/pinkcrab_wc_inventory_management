@@ -14,9 +14,10 @@
             "PC_Vendor\\": "pc_vendor/"
         },
         "files": [
-            "/pc_vendor/GuzzleHttp/Guzzle/functions.php",
-            "/pc_vendor/GuzzleHttp/Psr7/functions.php",
-            "/pc_vendor/GuzzleHttp/Promise/functions.php"
+            "pc_vendor/GuzzleHttp/Guzzle/functions_include.php",
+            "pc_vendor/GuzzleHttp/Psr7/functions_include.php",
+            "pc_vendor/GuzzleHttp/Promise/functions_include.php",
+            "pc_vendor/ralouphie/getallheaders/src/getallheaders.php"
         ]
     },
     "require-dev": {
