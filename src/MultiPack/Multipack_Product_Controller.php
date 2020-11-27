@@ -23,7 +23,7 @@ class Multipack_Product_Controller implements Registerable {
 	 * @method int product_packsize_modifer()
 	 * @method int get_max_qty_for_product()
 	 * @method string managed_stock_product()
-     * @method int  get_modified_stock_level()
+	 * @method int get_modified_stock_level()
 	 */
 	use MultiPack_Helper_Trait;
 
@@ -38,7 +38,6 @@ class Multipack_Product_Controller implements Registerable {
 		if ( WooCommece_Settings::allow_multipack() ) {
 			$loader->front_filter( 'woocommerce_product_is_in_stock', array( $this, 'is_in_stock' ), 10, 2 );
 			$loader->front_filter( 'woocommerce_get_stock_html', array( $this, 'stock_level_html' ), 10, 2 );
-			$loader->front_filter( 'woocommerce_quantity_input_max', array( $this, 'set_max_input_value' ), 30, 2 );
 			$loader->front_filter( 'woocommerce_available_variation', array( $this, 'set_variation_max_input_value' ), 10, 3 );
 		}
 	}
@@ -52,8 +51,13 @@ class Multipack_Product_Controller implements Registerable {
 	 * @return bool
 	 */
 	public function is_in_stock( bool $in_stock, WC_Product $product ): bool {
+
+		if ( is_cart() || is_checkout() ) {
+			return $in_stock;
+		}
+
 		return $this->managed_stock_product( $product ) && ! $product->backorders_allowed()
-			? $product->get_total_stock() >= $this->product_packsize_modifer( $product )
+			? $this->get_total_stock( $product ) >= $this->product_packsize_modifer( $product )
 			: $in_stock;
 	}
 
@@ -91,19 +95,8 @@ class Multipack_Product_Controller implements Registerable {
 			: sprintf(
 				"<p class='stock in-stock'>%d %sin stock</p>",
 				$modified_stocks,
-				$product_modifier > 1 ? " x {$product_modifier} pack " : ''
+				$product_modifier > 1 ? "x {$product_modifier} pack " : ''
 			);
-	}
-
-	/**
-	 * Sets the input forms max value.
-	 *
-	 * @param string $value
-	 * @param WC_Product $product
-	 * @return string
-	 */
-	public function set_max_input_value( string $value, WC_Product $product ):string {
-		return (string) $this->get_max_qty_for_product( $product );
 	}
 
 	/**

@@ -18,6 +18,9 @@ class WooCommece_Settings {
 	 */
 	public const ALLOW_MULTIPACK_MODIFIER = 'pc_invman_mp_modifier_enabled';
 
+	public const TAB_LABEL = 'Inventory Management';
+	public const TAB_KEY = 'pc_invman';
+
 	/**
 	 * Returns the if MultiPack modifier is active.
 	 *

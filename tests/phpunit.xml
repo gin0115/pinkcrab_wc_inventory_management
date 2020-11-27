@@ -1,20 +1,62 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-    bootstrap="tests/bootstrap.php"
-    backupGlobals="false"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    >
-    <testsuites>
-        <testsuite name="unit">
-            <directory prefix="test-" suffix=".php">./unit-tests/</directory>
-        </testsuite>
-    </testsuites>
-
-    <php>
-        <env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/wp-config.php" />
-    </php>
+	bootstrap="woo/tests/legacy/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	verbose="true"
+	>
+	<testsuites>
+		<testsuite name="WooCommerce Test Suite">
+			
+			<!-- WC Unit Tests, uncomment if you want to run the full test suite. -->
+			<!-- <directory suffix=".php">./woo/tests/legacy/unit-tests</directory>
+			<directory suffix=".php">./woo/tests/php</directory>  -->
+			
+		</testsuite>
+		<testsuite name="pinkcrab">
+			<directory suffix=".php">./unit-tests</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">./woo/includes</directory>
+			<file>woo/woocommerce.php</file>
+			<file>woo/uninstall.php</file>
+			<exclude>
+				<directory suffix=".php">./woo/includes/admin/helper/views</directory>
+				<directory suffix=".php">./woo/includes/admin/importers/views</directory>
+				<directory suffix=".php">./woo/includes/admin/meta-boxes/views</directory>
+				<directory suffix=".php">./woo/includes/admin/plugin-updates/views</directory>
+				<directory suffix=".php">./woo/includes/admin/views</directory>
+				<directory suffix=".php">./woo/includes/api/legacy</directory>
+				<directory suffix=".php">./woo/includes/api/v1</directory>
+				<directory suffix=".php">./woo/includes/legacy</directory>
+				<directory suffix=".php">./woo/includes/libraries</directory>
+				<directory suffix=".php">./woo/includes/shipping/legacy-flat-rate</directory>
+				<directory suffix=".php">./woo/includes/shipping/legacy-free-shipping</directory>
+				<directory suffix=".php">./woo/includes/shipping/legacy-international-delivery</directory>
+				<directory suffix=".php">./woo/includes/shipping/legacy-local-delivery</directory>
+				<directory suffix=".php">./woo/includes/shipping/legacy-local-pickup</directory>
+				<directory suffix=".php">./woo/includes/updates</directory>
+				<directory suffix=".php">./woo/includes/vendor</directory>
+				<directory suffix=".php">./woo/includes/widgets</directory>
+				<directory suffix=".php">./woo/packages</directory>
+				<directory suffix=".php">./woo/src</directory>
+				<directory suffix=".php">./woo/vendor</directory>
+				<file>./woo/includes/wc-deprecated-functions.php</file>
+				<file>./woo/includes/wc-template-hooks.php</file>
+				<file>./woo/includes/wc-widget-functions.php</file>
+			</exclude>
+		</whitelist>
+	</filter>
+	<listeners>
+		<listener class="SpeedTrapListener" file="woo/tests/legacy/includes/listener-loader.php" />
+	</listeners>
+	<extensions>
+		<extension class="\Automattic\WooCommerce\Testing\Tools\CodeHacking\CodeHackerTestHook" />
+		<extension class="\Automattic\WooCommerce\Testing\Tools\DependencyManagement\DependencyManagementTestHook" />
+	</extensions>
 </phpunit>
-

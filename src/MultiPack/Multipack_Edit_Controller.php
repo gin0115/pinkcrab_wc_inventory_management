@@ -63,6 +63,7 @@ class Multipack_Edit_Controller implements Registerable {
 			$loader->admin_action( 'woocommerce_variation_options_pricing', array( $this, 'render_variation_pack_size_input' ), 10, 3 );
 			$loader->admin_action( 'woocommerce_save_product_variation', array( $this, 'save_pack_size' ), 10, 2 );
 		}
+
 	}
 
 	/**
