@@ -9,31 +9,58 @@ use PinkCrab\InventoryManagment\Application\Config;
  *
  * @package WooCommerce\Tests\Account
  */
-
-/**
- * Class Functions.
- */
 class Test_Application extends WC_Unit_Test_Case {
 
+	/**
+	 * The apps container
+	 *
+	 * @var PinkCrab\Core\App
+	 */
 	protected $app;
+
+	/**
+	 * The app config object.
+	 *
+	 * @var PinkCrab\InventoryManagment\Application\Config
+	 */
 	protected $config;
 
-	public function setUp() {
+	/**
+	 * Sets the app container if its not already.
+	 *
+	 * @return void
+	 */
+	public function setUp(): void {
 		if ( ! $this->app ) {
 			$this->app    = App::getInstance();
 			$this->config = $this->app->get( 'config' );
 		}
 	}
 
-	public function testCanInitialiseApp() {
+	/**
+	 * Test that the app can be initalised.
+	 *
+	 * @return void
+	 */
+	public function test_can_get_app_instance(): void {
 		$this->assertInstanceOf( Config::class, $this->app->call( 'config' ) );
 	}
 
-	public function testCanGetRestNamespace() {
+	/**
+	 * Test the rest namespace is reutrned.
+	 *
+	 * @return void
+	 */
+	public function test_can_get_rest_namespace(): void {
 		$this->assertNotEmpty( $this->config->rest_namespace() );
 	}
 
-	public function testCanGetPaths() {
+	/**
+	 * Tests that all paths can be retrieved.
+	 *
+	 * @return void
+	 */
+	public function test_can_get_paths() {
 		$this->assertContains( 'woomandev', $this->config->path( 'plugin_path' ) );
 		$this->assertContains( 'woomandev/views', $this->config->path( 'view_path' ) );
 		$this->assertContains( 'woomandev/assets', $this->config->path( 'assets_path' ) );

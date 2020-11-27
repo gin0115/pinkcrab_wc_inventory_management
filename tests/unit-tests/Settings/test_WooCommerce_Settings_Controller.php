@@ -10,7 +10,6 @@ use PinkCrab\Core\App;
 use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\Settings\WooCommerce_Settings_Controller;
 
-
 class test_WooCommerce_Settings_Controller extends WC_Unit_Test_Case {
 
 	/**

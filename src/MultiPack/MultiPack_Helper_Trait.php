@@ -60,22 +60,12 @@ trait MultiPack_Helper_Trait {
 		}
 
 		// If the variation doenst have tracked shipping, check parent.
-		if ( $product->get_type() === 'variation' ) {
+		if ( $product->get_type() === 'variation' || $product->get_manage_stock() === 'parent' ) {
 			return wc_get_product( $product->get_parent_id() )->get_manage_stock();
 		}
 
 		// Fallback to false.
 		return false;
-	}
-
-	/**
-	 * Wrapper for managed_stock_product using ID.
-	 *
-	 * @param \WC_Product $product
-	 * @return bool
-	 */
-	protected function managed_stock_product_id( int $product_id ): bool {
-		return $this->managed_stock_product( \wc_get_product( $product_id ) );
 	}
 
 	/**

@@ -11,46 +11,46 @@ use PinkCrab\InventoryManagment\MultiPack\MultiPack_Config;
 use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\MultiPack\Multipack_Product_Controller;
 
+// Include helper trait
+require_once 'Helper_Traits/MultiPack_Product_Helper.php';
+
 /**
  * Class Functions.
  */
 class Test_Multipack_Product_Controller extends WC_Unit_Test_Case {
 
+	/**
+	 * The apps container
+	 *
+	 * @var PinkCrab\Core\App
+	 */
 	protected $app;
-	protected $product_variable;
-
-	public const STARTING_STOCK_VAL = 3;
-
-	public function setUp() {
-		if ( ! $this->app ) {
-			$this->app = App::getInstance();
-			$this->create_test_variable_product();
-		}
-	}
 
 	/**
-	 * Creates the test product.
+	 * The test product (has 6 variations.)
+	 *
+	 * @var WC_Product
+	 */
+	protected $product_variable;
+
+	/**
+	 * General Product helper test trait.
+	 * method WC_Product create_test_variable_product()
+	 */
+	use MultiPack_Product_Helper;
+
+	/**
+	 * Sets the app container if its not already.
 	 *
 	 * @return void
 	 */
-	public function create_test_variable_product(): void {
-
-		// Create primary test product.
-		$this->product_variable = \WC_Helper_Product::create_variation_product();
-		$this->product_variable->set_manage_stock( true );
-		$this->product_variable->set_stock_quantity( self::STARTING_STOCK_VAL );
-		$this->product_variable->set_backorders( 'no' );
-		$this->product_variable->save();
-
-		// Add the pack modifiers.
-		foreach ( $this->product_variable->get_available_variations() as $key => $variation ) {
-			update_post_meta(
-				$variation['variation_id'],
-				MultiPack_Config::WC_SETTINGS_DEFAULT_MULTIPLIER_KEY,
-				( $key + 1 )
-			);
+	public function setUp() {
+		if ( ! $this->app ) {
+			$this->app              = App::getInstance();
+			$this->product_variable = $this->create_test_variable_product();
 		}
 	}
+
 
 	/**
 	 * Tests the the is_in_stock callback is applied.
@@ -61,7 +61,7 @@ class Test_Multipack_Product_Controller extends WC_Unit_Test_Case {
 	public function test_is_in_stock() {
 
 		// 3 instock, so 3 should be in stock and 3 out.
-		$this->product_variable->set_stock_quantity( self::STARTING_STOCK_VAL );
+		$this->product_variable->set_stock_quantity( $this->starting_stock );
 		$this->product_variable->save();
 
 		foreach ( $this->product_variable->get_available_variations( 'object' )
@@ -85,7 +85,7 @@ class Test_Multipack_Product_Controller extends WC_Unit_Test_Case {
 		}
 
 		// Reset the test product.
-		$this->product_variable->set_stock_quantity( self::STARTING_STOCK_VAL );
+		$this->product_variable->set_stock_quantity( $this->starting_stock );
 		$this->product_variable->save();
 	}
 

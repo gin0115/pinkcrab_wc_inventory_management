@@ -35,6 +35,13 @@ class Multipack_Cart_Controller implements Registerable {
 		}
 	}
 
+	/**
+	 * Ensures that the max input value in the cart takes into account multipack
+	 *
+	 * @param int|null $stock
+	 * @param WC_Product|null $product
+	 * @return int|null
+	 */
 	public function set_max_input_value( ?int $stock = 0, ?WC_Product $product = null ): ?int {
 
 		if ( is_a( $product, WC_Product_Variation::class ) && $stock === 0 ) {
@@ -47,14 +54,4 @@ class Multipack_Cart_Controller implements Registerable {
 	}
 }
 
-// add_filter(
-// 	'woocommerce_product_variation_get_stock_quantity',
-// 	function( $a, $b ) {
-// 		dump( $a, $b );
-// 		return $a;
-// $this->product_packsize_modifer( $product )
-// 	},
-// 	10,
-// 	2
-// );
 
