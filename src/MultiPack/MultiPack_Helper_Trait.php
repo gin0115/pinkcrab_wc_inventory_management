@@ -54,7 +54,6 @@ trait MultiPack_Helper_Trait {
 		if ( ! $product->is_purchasable() ) {
 			return false;
 		}
-
 		// If the product is managable.
 		if ( is_bool( $product->get_manage_stock() ) && $product->get_manage_stock() ) {
 			return true;
@@ -86,7 +85,7 @@ trait MultiPack_Helper_Trait {
 	 * @return int
 	 */
 	protected function get_modified_stock_level( WC_Product $product ): int {
-		return (int) floor( $product->get_total_stock() / $this->product_packsize_modifer( $product ) );
+		return (int) floor( $this->get_total_stock( $product ) / $this->product_packsize_modifer( $product ) );
 	}
 
 	/**
@@ -117,6 +116,41 @@ trait MultiPack_Helper_Trait {
 		} else {
 			// If not a variable, just return the modified value.
 			return $this->get_modified_stock_level( $product );
+		}
+	}
+
+	/**
+	 * Polly fill for get_total_stock
+	 *
+	 * @param \WC_Product $product
+	 * @return int
+	 */
+	public function get_total_stock( WC_Product $product ): ?int {
+		switch ( $product->get_type() ) {
+			case 'variation':
+				return $product->get_stock_quantity();
+
+			case 'variable':
+				// Get the parent stocks.
+				$parent        = wc_get_product( $product->get_id() );
+				$parent_stocks = $parent->managing_stock()
+					? $parent->get_stock_quantity( $parent ) : 0;
+
+				return $parent_stocks + array_sum(
+					array_map(
+						function( $e ) {
+							$variation = wc_get_product( $e );
+							return $variation->managing_stock() === true
+								? $variation->get_stock_quantity() ?? 0
+								: 0;
+						},
+						$product->get_children()
+					)
+				);
+
+			default:
+				return 0;
+
 		}
 	}
 

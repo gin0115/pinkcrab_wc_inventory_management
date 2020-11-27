@@ -35,7 +35,7 @@ class Multipack_Cart_Controller implements Registerable {
 		}
 	}
 
-	public function set_max_input_value( ?int $stock = 0, ?WC_Product $product = null ): int {
+	public function set_max_input_value( ?int $stock = 0, ?WC_Product $product = null ): ?int {
 
 		if ( is_a( $product, WC_Product_Variation::class ) && $stock === 0 ) {
 			return 1;

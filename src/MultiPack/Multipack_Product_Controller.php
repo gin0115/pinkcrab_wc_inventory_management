@@ -52,8 +52,12 @@ class Multipack_Product_Controller implements Registerable {
 	 */
 	public function is_in_stock( bool $in_stock, WC_Product $product ): bool {
 
-		return is_product() && $this->managed_stock_product( $product ) && ! $product->backorders_allowed()
-			? $product->get_total_stock() >= $this->product_packsize_modifer( $product )
+		if ( is_cart() || is_checkout() ) {
+			return $in_stock;
+		}
+
+		return $this->managed_stock_product( $product ) && ! $product->backorders_allowed()
+			? $this->get_total_stock( $product ) >= $this->product_packsize_modifer( $product )
 			: $in_stock;
 	}
 
@@ -91,7 +95,7 @@ class Multipack_Product_Controller implements Registerable {
 			: sprintf(
 				"<p class='stock in-stock'>%d %sin stock</p>",
 				$modified_stocks,
-				$product_modifier > 1 ? " x {$product_modifier} pack " : ''
+				$product_modifier > 1 ? "x {$product_modifier} pack " : ''
 			);
 	}
 

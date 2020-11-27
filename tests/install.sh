@@ -23,19 +23,18 @@ echo "*************************************************************************"
 echo "*                                                                       *"
 echo "* Cloning latest WooCommerce Repo...                                    *"
 echo "*                                                                       *"
-
-
 git clone https://github.com/woocommerce/woocommerce.git woo
+
+
+
 echo "*                                                                       *"
 echo "* Removing GIT from WC Test Repo...                                     *"
-
-
-
 rm -rf woo/.git
+
+
 echo "*                                                                       *"
 echo "* Setting up WooCommerce WP_Unit suites                                 *"
 echo "*                                                                       *"
-
 if [[ -z "$DBPassword" ]]; then
    bash woo/tests/bin/install.sh $DBName $DBUserName "" $DBHost
 else
@@ -45,7 +44,15 @@ fi
 echo "*                                                                       *"
 echo "* Running composer install....                                          *"
 echo "*                                                                       *"
-cd woo && composer install
+cd woo && composer install && cd ..
+
+
+echo "*                                                                       *"
+echo "* Linking local bootstrap file                                          *"
+echo "*                                                                       *"
+filename='woo/tests/legacy/bootstrap.php'
+sed -i '/install WC./a \        include dirname( __FILE__, 4) . "/bootstrap.php";' $filename 
+
 
 echo "*************************************************************************"
 echo "*                                                                       *"
@@ -66,3 +73,5 @@ echo "*                                                                       *"
 echo "*                         NOW TEST, TEST, TEST!                         *"
 echo "*                                                                       *"
 echo "*************************************************************************"
+
+

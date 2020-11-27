@@ -19,8 +19,13 @@ use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 
 class WooCommerce_Settings_Controller implements Registerable {
 
-	protected $tab_key = 'pc_invman';
+	protected $tab_key = WooCommece_Settings::TAB_KEY;
 
+	/**
+	 * Application config.
+	 *
+	 * @var PinkCrab\InventoryManagment\Application\Config
+	 */
 	protected $config;
 
 	public function __construct( Config $config ) {
@@ -31,7 +36,7 @@ class WooCommerce_Settings_Controller implements Registerable {
 	/**
 	 * Registers all hook and filter call.
 	 *
-	 * @param Loader $loader
+	 * @param PinkCrab\Core\Services\Registration\Loader $loader
 	 * @return void
 	 */
 	public function register( Loader $loader ): void {
@@ -47,118 +52,113 @@ class WooCommerce_Settings_Controller implements Registerable {
 	 * @return array
 	 */
 	public function register_settings_tab( array $sections ): array {
-		$sections[ $this->tab_key ] = __( 'Inventory Management', 'pc_invman' );
+		$sections[ $this->tab_key ] = __( WooCommece_Settings::TAB_LABEL, 'pc_invman' );
 		return $sections;
 	}
 
-
 	/**
-	 * Get settings array
+	 * Returns the fields for the tab.
 	 *
-	 * @since 1.0.0
-	 * @param string $current_section Optional. Defaults to empty string.
-	 * @return array Array of settings
+	 * @filtered PinkCrab\InvMan\wc_settings_page_fields array
+	 * @param array|null $current_section
+	 * @return array
 	 */
-	public function get_settings( $current_section = '' ) {
-		$settings = apply_filters(
-			'myplugin_section1_settings',
+	public function fields( ?array $current_section = null ):array {
+		$settings = array(
 			array(
+				'name' => __( 'Multipack Controls', 'pc-invman' ),
+				'type' => 'title',
+				'desc' => '',
+				'id'   => 'pc-invman_wc_settings_mp_header',
+			),
 
-				array(
-					'name' => __( 'Multipack Controls', 'pc-invman' ),
-					'type' => 'title',
-					'desc' => '',
-					'id'   => 'pc-invman_wc_settings_mp_header',
-				),
+			array(
+				'type'    => 'checkbox',
+				'id'      => WooCommece_Settings::ALLOW_MULTIPACK_MODIFIER,
+				'name'    => __( 'Use multipack modifiers?', 'pc-invman' ),
+				'desc'    => __( 'If enabled all products and variations can make use of the packsize modifiers.', 'pc-invman' ),
+				'default' => 'no',
+			),
 
-				array(
-					'type'    => 'checkbox',
-					'id'      => WooCommece_Settings::ALLOW_MULTIPACK_MODIFIER,
-					'name'    => __( 'Use multipack modifiers?', 'pc-invman' ),
-					'desc'    => __( 'If enabled all products and variations can make use of the packsize modifiers.', 'pc-invman' ),
-					'default' => 'no',
-				),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'pc-invman_wc_settings_mp_header',
+			),
 
-				array(
-					'type' => 'sectionend',
-					'id'   => 'pc-invman_wc_settings_mp_header',
-				),
+			/** ---------------------------------------------------- */
+			// PLACEHOLDERS BELOW!!!!
+			array(
+				'name' => __( 'Group 1', 'pc-invman' ),
+				'type' => 'title',
+				'desc' => '',
+				'id'   => 'myplugin_group1_options',
+			),
 
-				/** ---------------------------------------------------- */
-// PLACEHOLDERS BELOW!!!!
-				array(
-					'name' => __( 'Group 1', 'pc-invman' ),
-					'type' => 'title',
-					'desc' => '',
-					'id'   => 'myplugin_group1_options',
-				),
+			array(
+				'type'    => 'checkbox',
+				'id'      => 'myplugin_checkbox_1',
+				'name'    => __( 'Do a thing?', 'pc-invman' ),
+				'desc'    => __( 'Enable to do something', 'pc-invman' ),
+				'default' => 'no',
+			),
 
-				array(
-					'type'    => 'checkbox',
-					'id'      => 'myplugin_checkbox_1',
-					'name'    => __( 'Do a thing?', 'pc-invman' ),
-					'desc'    => __( 'Enable to do something', 'pc-invman' ),
-					'default' => 'no',
-				),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'myplugin_group1_options',
+			),
 
-				array(
-					'type' => 'sectionend',
-					'id'   => 'myplugin_group1_options',
-				),
+			array(
+				'name' => __( 'Group 2', 'pc-invman' ),
+				'type' => 'title',
+				'desc' => '',
+				'id'   => 'myplugin_group2_options',
+			),
 
-				array(
-					'name' => __( 'Group 2', 'pc-invman' ),
-					'type' => 'title',
-					'desc' => '',
-					'id'   => 'myplugin_group2_options',
+			array(
+				'type'     => 'select',
+				'id'       => 'myplugin_select_1',
+				'name'     => __( 'What should happen?', 'pc-invman' ),
+				'options'  => array(
+					'something' => __( 'Something', 'pc-invman' ),
+					'nothing'   => __( 'Nothing', 'pc-invman' ),
+					'idk'       => __( 'IDK', 'pc-invman' ),
 				),
+				'class'    => 'wc-enhanced-select',
+				'desc_tip' => __( 'Don\'t ask me!', 'pc-invman' ),
+				'default'  => 'idk',
+			),
 
-				array(
-					'type'     => 'select',
-					'id'       => 'myplugin_select_1',
-					'name'     => __( 'What should happen?', 'pc-invman' ),
-					'options'  => array(
-						'something' => __( 'Something', 'pc-invman' ),
-						'nothing'   => __( 'Nothing', 'pc-invman' ),
-						'idk'       => __( 'IDK', 'pc-invman' ),
-					),
-					'class'    => 'wc-enhanced-select',
-					'desc_tip' => __( 'Don\'t ask me!', 'pc-invman' ),
-					'default'  => 'idk',
-				),
-
-				array(
-					'type' => 'sectionend',
-					'id'   => 'myplugin_group2_options',
-				),
-			)
+			array(
+				'type' => 'sectionend',
+				'id'   => 'myplugin_group2_options',
+			),
 		);
 
-		return $settings;
-
+		return apply_filters(
+			'PinkCrab\\InvMan\\wc_settings_page_fields',
+			array_merge( $current_section ?? array(), $settings )
+		);
 	}
 
 
 	/**
-	 * Output the settings
+	 * Renders the form output.
 	 *
-	 * @since 1.0
+	 * @return void
 	 */
-	public function output() {
-
+	public function output(): void {
 		global $current_section;
-		WC_Admin_Settings::output_fields( $this->get_settings( $current_section ) );
+		WC_Admin_Settings::output_fields( $this->fields( $current_section ) );
 	}
 
 
 	/**
-	 * Save settings
+	 * Saves any values from the fields (in $_POST)
 	 *
-	 * @since 1.0
+	 * @return void
 	 */
-	public function save() {
-
+	public function save(): void {
 		global $current_section;
-		WC_Admin_Settings::save_fields( $this->get_settings( $current_section ) );
+		WC_Admin_Settings::save_fields( $this->fields( $current_section ) );
 	}
 }

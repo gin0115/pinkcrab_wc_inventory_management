@@ -1,7 +1,7 @@
 # Tests 
-/tests/vendor/
-/tests/wordpress/
-/tests/woo/
+/tests/vendor/*
+/tests/wordpress/*
+/tests/woo/*
 # Vendor
 /vendor/
 composer.lock
