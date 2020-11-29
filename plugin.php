@@ -28,4 +28,6 @@ register_deactivation_hook( __FILE__, array( App::make( Deactivation::class ), '
 
 
 
-
+add_action('init', function(){
+	// dump(get_comment_text(29));
+});

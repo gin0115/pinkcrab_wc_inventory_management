@@ -46,6 +46,17 @@ class Collection
 	}
 
 	/**
+	 * Static contrcutor
+	 *
+	 * @param mixed ...$data
+	 * @return self
+	 */
+	public static function from(array $data = []): self
+	{
+		return new static($data);
+	}
+
+	/**
 	 * Pushes an item to the collection and reutrns a new instance.
 	 *
 	 * @param mixed ...$data
@@ -172,6 +183,17 @@ class Collection
 	public function is_empty(): bool
 	{
 		return empty($this->data);
+	}
+
+	/**
+	 * Joins the inner array to an string.
+	 *
+	 * @param string $glue
+	 * @return string
+	 */
+	public function join(string $glue = ''): string
+	{
+		return \join($glue, $this->data);
 	}
 
 	/**

@@ -63,7 +63,7 @@ class WooCommerce_Settings_Controller implements Registerable {
 	 * @param array|null $current_section
 	 * @return array
 	 */
-	public function fields( ?array $current_section = null ):array {
+	public function fields( $current_section = null ):array {
 		$settings = array(
 			array(
 				'name' => __( 'Multipack Controls', 'pc-invman' ),
@@ -78,6 +78,13 @@ class WooCommerce_Settings_Controller implements Registerable {
 				'name'    => __( 'Use multipack modifiers?', 'pc-invman' ),
 				'desc'    => __( 'If enabled all products and variations can make use of the packsize modifiers.', 'pc-invman' ),
 				'default' => 'no',
+			),
+			array(
+				'type'        => 'text',
+				'id'          => WooCommece_Settings::CART_MULTIPACK_SIZE_META,
+				'name'        => __( 'Cart Item Label', 'pc-invman' ),
+				'desc' => __( 'Use {pack_size} as a placeholder, which will be replaced the actual packsize. (<strong>Packsize : 3</strong>)', 'woocommerce' ),
+				'default'     => __( '{pack_size}', 'woocommerce' ),
 			),
 
 			array(
@@ -133,10 +140,9 @@ class WooCommerce_Settings_Controller implements Registerable {
 				'id'   => 'myplugin_group2_options',
 			),
 		);
-
 		return apply_filters(
 			'PinkCrab\\InvMan\\wc_settings_page_fields',
-			array_merge( $current_section ?? array(), $settings )
+			array_merge( empty( $current_section ) ? array() : $current_section, $settings )
 		);
 	}
 

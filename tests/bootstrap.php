@@ -17,6 +17,7 @@ tests_add_filter(
 		require_once dirname( __DIR__, 1 ) . '/plugin.php';
 
 		add_option( WooCommece_Settings::ALLOW_MULTIPACK_MODIFIER, 'yes' );
+		add_option( WooCommece_Settings::CART_MULTIPACK_SIZE_META, '{pack_size}' );
 	}
 );
 

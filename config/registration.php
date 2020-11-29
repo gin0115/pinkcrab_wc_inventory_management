@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 use PinkCrab\InventoryManagment\MultiPack\Multipack_Cart_Controller;
 use PinkCrab\InventoryManagment\MultiPack\Multipack_Edit_Controller;
+use PinkCrab\InventoryManagment\MultiPack\Multipack_Order_Controller;
 use PinkCrab\InventoryManagment\MultiPack\Multipack_Product_Controller;
 use PinkCrab\InventoryManagment\Settings\WooCommerce_Settings_Controller;
 
@@ -24,4 +25,5 @@ return array(
 	Multipack_Edit_Controller::class,
 	Multipack_Product_Controller::class,
 	Multipack_Cart_Controller::class,
+	Multipack_Order_Controller::class
 );
