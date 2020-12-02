@@ -11,20 +11,23 @@ declare(strict_types=1);
 
 namespace PinkCrab\InventoryManagment\MultiPack;
 
+use PinkCrab\Core\App;
 use PinkCrab\Core\Collection\Collection;
 use PinkCrab\Core\Interfaces\Registerable;
+use PinkCrab\Core\Services\Log\File_Logger;
 use PinkCrab\Core\Services\Registration\Loader;
 use PinkCrab\FunctionConstructors\Arrays as Arr;
 use PinkCrab\FunctionConstructors\Strings as Str;
 use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Helper_Trait;
-use WC_Order_Item_Product, WC_Order, WC_Meta_Data, WC_Order_Item;
+use WC_Order_Item_Product, WC_Order, WC_Meta_Data, WC_Order_Item, WC_Product;
 
 class Multipack_Order_Controller implements Registerable {
 
 	/**
 	 */
 	use MultiPack_Helper_Trait;
+
 
 	/**
 	 * Hook loader.
@@ -40,51 +43,7 @@ class Multipack_Order_Controller implements Registerable {
 			$loader->admin_filter( 'woocommerce_order_item_display_meta_key', array( $this, 'replace_packsize_key_with_string_in_order_admin' ), 10, 3 );
 			$loader->filter( 'woocommerce_order_item_quantity', array( $this, 'adjust_order_item_quantity' ), 10, 3 );
 			$loader->action( 'woocommerce_order_note_added', 'add_modified_stock_changes_note', 10, 2 );
-			// Refund (AJAX)
-			// $loader->action(
-			// 	'woocommerce_create_refund',
-			// 	function( $refund, &$args ) {
-			// 		if ( $args['order_id'] > 0 ) {
-
-			// 			$line_items = \wc_get_order( $args['order_id'] )->get_items();
-
-			// 			foreach ( $line_items as $item_id => $item ) {
-			// 				$args['line_items'][ $item_id ]['qty'] =
-			// 					$item->meta_exists( WooCommece_Settings::CART_MULTIPACK_SIZE_META )
-			// 						? (int) $item->get_meta( WooCommece_Settings::CART_MULTIPACK_SIZE_META, true ) * $item->get_quantity()
-			// 						: $item->get_quantity();
-			// 			}
-			// 			// adie( $refund->get_items(), $args );
-			// 		}
-			// 	},
-			// 	10,
-			// 	2
-			// );
-
-			$loader->filter(
-				'woocommerce_api_create_order_refund_data',
-				function ( array $request, int $order_id, WC_Order $order ): array {
-					dump( $request, $order_id, $order );
-					die();
-					return $request;
-				},
-				10,
-				3
-			);
-			$loader->action(
-				'woocommerce_admin_order_item_values',
-				function( $product, $order_item, $item_id ) {
-					if ( is_a( $order_item, WC_Order_Item_Product::class )
-						&& $order_item->meta_exists( WooCommece_Settings::CART_MULTIPACK_SIZE_META )
-					) {
-						$order_item->set_quantity(
-							(int) $order_item->get_meta( WooCommece_Settings::CART_MULTIPACK_SIZE_META, true ) * $order_item->get_quantity()
-						);
-					}
-				},
-				10,
-				3
-			);
+			$loader->action( 'woocommerce_restock_refunded_item', array( $this, 'adjust_refund_item_stock_adjustment' ), 10, 5 );
 		}
 	}
 
@@ -97,10 +56,47 @@ class Multipack_Order_Controller implements Registerable {
 	 * @return int
 	 */
 	public function adjust_order_item_quantity( int $qty, WC_Order $order, WC_Order_Item_Product $order_item ): int {
-		dump( array( 'adjust_order_item_quantity', $qty, $order, $order_item ) );
 		return $order_item->meta_exists( WooCommece_Settings::CART_MULTIPACK_SIZE_META )
 			? (int) $order_item->get_meta( WooCommece_Settings::CART_MULTIPACK_SIZE_META, true ) * $qty
 			: $qty;
+	}
+
+
+	/**
+	 * Makes the stock level adjustment, if item uses the pack size multipiler.
+	 *
+	 * @param int $product_id
+	 * @param int $old_stock
+	 * @param int $new_stock
+	 * @param WC_Order $order
+	 * @param WC_Product $product
+	 * @return void
+	 */
+	public function adjust_refund_item_stock_adjustment(
+		int $product_id,
+		int $old_stock,
+		int $new_stock,
+		WC_Order $order,
+		WC_Product $product
+	): void {
+		foreach ( $order->get_items() as $order_item ) {
+						// If the current product being processed.
+			if ( is_a( $order_item, WC_Order_Item_Product::class )
+					&& $order_item->meta_exists( WooCommece_Settings::CART_MULTIPACK_SIZE_META )
+					&& ( $order_item->get_variation_id() == $product_id || $order_item->get_product_id() == $product_id )
+				) {
+
+				// Calcualte differences
+				$inital_refuned_qty = $new_stock - $old_stock;
+				$adjustment_qty     = ( $order_item->get_meta( WooCommece_Settings::CART_MULTIPACK_SIZE_META, true ) * $inital_refuned_qty ) - $inital_refuned_qty;
+
+				// If there is an adjust qty, make stock change and set notice.
+				if ( $adjustment_qty > 0 ) {
+					$ammended_stock = wc_update_product_stock( $product, $adjustment_qty, 'increase' );
+					$order->add_order_note( sprintf( __( '(Packsize Adjustment) Item #%1$s stock increased from %2$s to %3$s.', 'woocommerce' ), $product_id, $new_stock, $ammended_stock ) );
+				}
+			}
+		}
 	}
 
 	/**
@@ -112,7 +108,6 @@ class Multipack_Order_Controller implements Registerable {
 	 * @return void
 	 */
 	public function add_modified_stock_changes_note( int $note_id, WC_Order $order ): void {
-		dump( get_comment_text( $note_id ) );
 		if ( str_contains( get_comment_text( $note_id ), 'Stock levels reduced:' ) ) {
 
 			// Get all valid & mapped stock change details.
@@ -124,8 +119,6 @@ class Multipack_Order_Controller implements Registerable {
 				wp_delete_comment( $note_id, true );
 				$order->add_order_note( $changes->unshift( '<b>Stock Changes</b>' )->join( '</br>' ) );
 			}
-
-			dd( $changes->join( '</br>' ) );
 		}
 	}
 
