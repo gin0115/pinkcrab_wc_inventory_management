@@ -13,6 +13,7 @@
  */
 
 use PinkCrab\Core\App;
+use PinkCrab\Core\Services\Log\File_Logger;
 use PinkCrab\InventoryManagment\WP\Activation;
 use PinkCrab\InventoryManagment\WP\Deactivation;
 
@@ -28,6 +29,6 @@ register_deactivation_hook( __FILE__, array( App::make( Deactivation::class ), '
 
 
 
-add_action('init', function(){
-	// dump(get_comment_text(29));
-});
+
+
+

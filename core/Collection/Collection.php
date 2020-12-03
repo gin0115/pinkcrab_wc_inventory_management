@@ -254,4 +254,15 @@ class Collection
 		$this->array[$index] = $value;
 		return $this;
 	}
+
+	/**
+	 * Apply array unique to inner data.
+	 *
+	 * @param int $flag Use the same flag as array_unique.
+	 * @return self
+	 */
+	public function unique(int $flag = SORT_STRING ): self
+	{
+		return new static( $this->is_empty() ? [] : array_unique( $this->data, $flag ) );
+	}
 }

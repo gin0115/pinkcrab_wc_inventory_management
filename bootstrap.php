@@ -12,6 +12,7 @@ declare(strict_types=1);
 use PinkCrab\Core\App;
 use PinkCrab\Core\Services\Dice\Dice;
 use PinkCrab\Core\Services\Dice\WP_Dice;
+use PinkCrab\Core\Services\Log\File_Logger;
 use PinkCrab\Core\Services\Registration\Loader;
 use PinkCrab\InventoryManagment\Application\Config;
 use PinkCrab\Core\Services\ServiceContainer\Container;
@@ -21,10 +22,13 @@ use PinkCrab\Core\Services\Registration\Register_Loader;
 $loader = Loader::boot();
 $config = new Config( wp_upload_dir() );
 
+// Debug Logger
+$logger = new File_Logger( $config->path( 'basedir' ) . 'logs/pinkcrab/Multipack.log', 'dev' );
 // Setup the service container .
 $container = new Container();
 $container->set( 'di', WP_Dice::constructWith( new Dice() ) );
 $container->set( 'config', $config );
+$container->set( 'log', $logger );
 
 // Boot the app.
 $app = App::init( $container );
