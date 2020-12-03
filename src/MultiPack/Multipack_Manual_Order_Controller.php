@@ -18,7 +18,7 @@ use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Helper_Trait;
 use WC_Order_Item_Product, WC_Order, WC_Meta_Data, WC_Order_Item, WC_Product;
 
-class Multipack_Order_Controller implements Registerable {
+class Multipack_Manual_Order_Controller implements Registerable {
 
 	/**
 	 * @method int packsize_modifier_from_id()
