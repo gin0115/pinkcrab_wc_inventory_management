@@ -23,12 +23,12 @@ $loader = Loader::boot();
 $config = new Config( wp_upload_dir() );
 
 // Debug Logger
-$logger = new File_Logger( $config->path( 'basedir' ) . 'logs/pinkcrab/Multipack.log', 'dev' );
+// $logger = new File_Logger( $config->path( 'basedir' ) . 'logs/pinkcrab/Multipack.log', 'dev' );
 // Setup the service container .
 $container = new Container();
 $container->set( 'di', WP_Dice::constructWith( new Dice() ) );
 $container->set( 'config', $config );
-$container->set( 'log', $logger );
+// $container->set( 'log', $logger );
 
 // Boot the app.
 $app = App::init( $container );

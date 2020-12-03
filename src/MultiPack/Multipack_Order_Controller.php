@@ -55,8 +55,6 @@ class Multipack_Order_Controller implements Registerable {
 	 * @return int
 	 */
 	public function adjust_order_item_quantity_public( int $qty, WC_Order $order, WC_Order_Item_Product $order_item ): int {
-					App::log()->debug( serialize( $order_item ) );
-
 		return $order_item->meta_exists( WooCommece_Settings::CART_MULTIPACK_SIZE_META )
 			? (int) $order_item->get_meta( WooCommece_Settings::CART_MULTIPACK_SIZE_META, true ) * $qty
 			: $qty;
