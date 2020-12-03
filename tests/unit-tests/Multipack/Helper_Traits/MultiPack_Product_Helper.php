@@ -26,6 +26,7 @@ trait MultiPack_Product_Helper {
 		// Create primary test product.
 		$product = \WC_Helper_Product::create_variation_product();
 		$product->set_manage_stock( true );
+		$product->set_props( array( 'manage_stock' => true ) );
 		$product->set_stock_quantity( $this->starting_stock );
 		$product->set_backorders( 'no' );
 		$product->set_price( 12.99 );
