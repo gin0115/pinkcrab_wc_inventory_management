@@ -58,9 +58,13 @@ class test_WooCommerce_Settings_Controller extends WC_Unit_Test_Case {
 		$output = ob_get_contents();
 		ob_end_clean();
 
-		// Check fields are defined.
 		$this->assertStringContainsString(
 			sprintf( 'id="%s"', WooCommece_Settings::ALLOW_MULTIPACK_MODIFIER ),
+			$output
+		);
+
+		$this->assertStringContainsString(
+			sprintf( 'id="%s"', WooCommece_Settings::CART_MULTIPACK_SIZE_META ),
 			$output
 		);
 	}

@@ -46,6 +46,17 @@ class Collection
 	}
 
 	/**
+	 * Static contrcutor
+	 *
+	 * @param mixed ...$data
+	 * @return self
+	 */
+	public static function from(array $data = []): self
+	{
+		return new static($data);
+	}
+
+	/**
 	 * Pushes an item to the collection and reutrns a new instance.
 	 *
 	 * @param mixed ...$data
@@ -175,6 +186,17 @@ class Collection
 	}
 
 	/**
+	 * Joins the inner array to an string.
+	 *
+	 * @param string $glue
+	 * @return string
+	 */
+	public function join(string $glue = ''): string
+	{
+		return \join($glue, $this->data);
+	}
+
+	/**
 	 * Searches for a simple value
 	 * Uses array_search()
 	 *
@@ -231,5 +253,16 @@ class Collection
 	{
 		$this->array[$index] = $value;
 		return $this;
+	}
+
+	/**
+	 * Apply array unique to inner data.
+	 *
+	 * @param int $flag Use the same flag as array_unique.
+	 * @return self
+	 */
+	public function unique(int $flag = SORT_STRING ): self
+	{
+		return new static( $this->is_empty() ? [] : array_unique( $this->data, $flag ) );
 	}
 }

@@ -14,6 +14,7 @@ namespace PinkCrab\InventoryManagment\MultiPack;
 
 use WC_Product;
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Config;
+use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 
 trait MultiPack_Helper_Trait {
 
@@ -142,6 +143,20 @@ trait MultiPack_Helper_Trait {
 				return 0;
 
 		}
+	}
+
+	/**
+	 * Repalces the multipack cart item meta key, with its sting value.
+	 *
+	 * @param string $meta
+	 * @return string
+	 */
+	public function replace_multipack_meta_key_in_string( string $meta ): string {
+		return str_replace(
+			WooCommece_Settings::CART_MULTIPACK_SIZE_META,
+			__( 'Packsize', 'pc_invman' ),
+			$meta
+		);
 	}
 
 }

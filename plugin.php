@@ -13,6 +13,7 @@
  */
 
 use PinkCrab\Core\App;
+use PinkCrab\Core\Services\Log\File_Logger;
 use PinkCrab\InventoryManagment\WP\Activation;
 use PinkCrab\InventoryManagment\WP\Deactivation;
 
@@ -25,6 +26,8 @@ require_once __DIR__ . '/bootstrap.php';
 
 register_activation_hook( __FILE__, array( App::make( Activation::class ), 'activate' ) );
 register_deactivation_hook( __FILE__, array( App::make( Deactivation::class ), 'deactivate' ) );
+
+
 
 
 

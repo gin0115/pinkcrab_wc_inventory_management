@@ -17,7 +17,8 @@
             "pc_vendor/GuzzleHttp/Guzzle/functions_include.php",
             "pc_vendor/GuzzleHttp/Psr7/functions_include.php",
             "pc_vendor/GuzzleHttp/Promise/functions_include.php",
-            "pc_vendor/ralouphie/getallheaders/src/getallheaders.php"
+            "pc_vendor/ralouphie/getallheaders/src/getallheaders.php",
+            "core/Modules/function_constructors/loader.php"
         ]
     },
     "require-dev": {
