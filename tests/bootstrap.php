@@ -16,6 +16,7 @@ tests_add_filter(
 	function() {
 		require_once dirname( __DIR__, 1 ) . '/plugin.php';
 
+		// Set all base states for settings.
 		add_option( WooCommece_Settings::ALLOW_MULTIPACK_MODIFIER, 'yes' );
 		add_option( WooCommece_Settings::CART_MULTIPACK_SIZE_META, '{pack_size}' );
 	}
@@ -27,7 +28,7 @@ tests_add_filter(
  */
 if ( ! function_exists( 'str_contains' ) ) {
 	function str_contains( $haystack, $needle ): bool {
-		return strpos( $needle, $haystack ) !== false;
+		return strpos( $haystack, $needle ) !== false;
 	}
 }
 

@@ -7,7 +7,6 @@
  */
 
 use PinkCrab\Core\App;
-use MultiPack_Product_Helper;
 use Automattic\Jetpack\Constants;
 use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Helper_Trait;
@@ -71,7 +70,12 @@ class test_MultiPack_Order_Controller extends WC_Unit_Test_Case {
 		$this->product_variable->save();
 	}
 
-	public function test_packsize_is_taken_into_account_in_stock_deduction() {
+	/**
+	 * Tests that an variation can be ordered.
+	 *
+	 * @return void
+	 */
+	public function test_packsize_is_taken_into_account_in_stock_deduction(): void {
 		$this->product_variable->set_stock_quantity( 12 );
 		$this->product_variable->save();
 
@@ -95,7 +99,30 @@ class test_MultiPack_Order_Controller extends WC_Unit_Test_Case {
 		// Check stock is deducted by 9 (3 * 3)
 		$this->assertEquals( 3, $this->get_total_stock( $this->product_variable ) );
 
-		// Attempt again.
+		// Check the note with adjustment is created.
+		$notes             = wc_get_order_notes(
+			array(
+				'order_id' => $order->get_id(),
+				'type'     => 'internal',
+			)
+		);
+		$reduction_notices = array_filter(
+			$notes,
+			function( $e ) {
+				return str_contains( $e->content, '<b>Stock Changes</b>' )
+				&& str_contains( $e->content, '(Packsize: 3) 12 &rarr; 3' );
+			}
+		);
+		$this->assertCount( 1, $reduction_notices );
+
+		// Check the order item meta is set.
+		$items = $order->get_items();
+		foreach ( $items as $item ) {
+			$this->assertTrue( $item->meta_exists( WooCommece_Settings::CART_MULTIPACK_SIZE_META ) );
+			$this->assertEquals( 3, $item->get_meta( WooCommece_Settings::CART_MULTIPACK_SIZE_META, 'FAILED' ) );
+		}
+
+		// Attempt again, but expect error as not enough stock (3 left)!
 		WC()->cart->empty_cart();
 
 		$cart_item_key2 = WC()->cart->add_to_cart(
