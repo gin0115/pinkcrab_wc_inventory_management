@@ -9,7 +9,7 @@
 
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Config;
 
-trait MultiPack_Product_Helper {
+trait MultiPack_Product_Test_Helper {
 
 	/**
 	 * Sets the main starting stock for all products.
@@ -42,6 +42,22 @@ trait MultiPack_Product_Helper {
 		}
 
 		return $product;
+	}
+
+	/**
+	 * Completes a checkout and returns the WC_Order instance.
+	 *
+	 * @return WC_Order|WP_Error
+	 */
+	public function do_complete_order_successfully() {
+		$checkout = WC_Checkout::instance();
+		$order_id = $checkout->create_order(
+			array(
+				'billing_email'  => 'a@b.com',
+				'payment_method' => 'dummy_payment_gateway',
+			)
+		);
+		return ! is_wp_error( $order_id ) ? new WC_Order( $order_id ) : $order_id;
 	}
 
 }

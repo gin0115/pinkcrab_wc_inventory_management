@@ -11,7 +11,7 @@ use Automattic\Jetpack\Constants;
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Helper_Trait;
 
 // Include helper trait
-require_once 'Helper_Traits/MultiPack_Product_Helper.php';
+require_once 'Helper_Traits/MultiPack_Product_Test_Helper.php';
 
 /**
  * Tests the MultiPack_Helper_Trait
@@ -37,7 +37,7 @@ class Test_MultiPack_Helper_Trait extends WC_Unit_Test_Case {
 	 * General Product helper test trait.
 	 * method WC_Product create_test_variable_product()
 	 */
-	use MultiPack_Product_Helper;
+	use MultiPack_Product_Test_Helper;
 
 	/**
 	 * The trait being tested!

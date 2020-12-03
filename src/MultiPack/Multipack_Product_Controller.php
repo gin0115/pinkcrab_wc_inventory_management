@@ -81,6 +81,11 @@ class Multipack_Product_Controller implements Registerable {
 			return $stock;
 		}
 
+		// If the product doesnt have managed stock, just return as is.
+		if ( ! $product->managing_stock() ) {
+			return $stock;
+		}
+
 		// If backorderable and modified stocks are less than 0.
 		if ( $product->backorders_allowed() && $modified_stocks <= 0 ) {
 			// Based on if notify customer.

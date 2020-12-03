@@ -12,7 +12,7 @@ use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\MultiPack\Multipack_Product_Controller;
 
 // Include helper trait
-require_once 'Helper_Traits/MultiPack_Product_Helper.php';
+require_once 'Helper_Traits/MultiPack_Product_Test_Helper.php';
 
 /**
  * Class Functions.
@@ -37,7 +37,7 @@ class Test_Multipack_Product_Controller extends WC_Unit_Test_Case {
 	 * General Product helper test trait.
 	 * method WC_Product create_test_variable_product()
 	 */
-	use MultiPack_Product_Helper;
+	use MultiPack_Product_Test_Helper;
 
 	/**
 	 * Sets the app container if its not already.

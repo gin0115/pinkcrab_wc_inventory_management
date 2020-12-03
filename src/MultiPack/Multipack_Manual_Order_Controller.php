@@ -114,13 +114,12 @@ class Multipack_Manual_Order_Controller implements Registerable {
 	 * @return void
 	 */
 	public function add_packsize_to_ajax_order_item( int $item_id, $item, WC_Order $order ): void {
-
 		$cart_item = $order->get_item( $item_id );
+		dump($cart_item);
 		// If this is a product.
 		if ( is_a( $cart_item, WC_Order_Item_Product::class ) ) {
 
 			$pack_size = $this->packsize_modifier_from_id( $cart_item->get_product()->get_id() );
-
 			if ( $pack_size > 1 ) {
 				$pack_size_template = WooCommece_Settings::cart_item_pack_size_template();
 				wc_update_order_item_meta(

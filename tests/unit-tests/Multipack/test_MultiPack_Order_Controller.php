@@ -12,7 +12,7 @@ use PinkCrab\InventoryManagment\Settings\WooCommece_Settings;
 use PinkCrab\InventoryManagment\MultiPack\MultiPack_Helper_Trait;
 
 // Include helper trait
-require_once 'Helper_Traits/MultiPack_Product_Helper.php';
+require_once 'Helper_Traits/MultiPack_Product_Test_Helper.php';
 
 /**
  * Class Functions.
@@ -44,7 +44,7 @@ class test_MultiPack_Order_Controller extends WC_Unit_Test_Case {
 	 * General Product helper test trait.
 	 * method WC_Product create_test_variable_product()
 	 */
-	use MultiPack_Product_Helper, MultiPack_Helper_Trait;
+	use MultiPack_Product_Test_Helper, MultiPack_Helper_Trait;
 
 	/**
 	 * Sets the app container if its not already.
@@ -136,19 +136,5 @@ class test_MultiPack_Order_Controller extends WC_Unit_Test_Case {
 
 	}
 
-	/**
-	 * Completes a checkout and returns the WC_Order instance.
-	 *
-	 * @return WC_Order|WP_Error
-	 */
-	public function do_complete_order_successfully() {
-		$checkout = WC_Checkout::instance();
-		$order_id = $checkout->create_order(
-			array(
-				'billing_email'  => 'a@b.com',
-				'payment_method' => 'dummy_payment_gateway',
-			)
-		);
-		return ! is_wp_error( $order_id ) ? new WC_Order( $order_id ) : $order_id;
-	}
+	
 }
